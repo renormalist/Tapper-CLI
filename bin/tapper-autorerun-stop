@@ -1,0 +1,10 @@
+#! /bin/bash
+
+ID=$1
+
+if [ -n "$ID" ] ; then
+    CONDITION=" and testrun_id=$ID"
+fi
+
+echo "update testrun_scheduling set auto_rerun=0 where status!='finished' $CONDITION;" | sqlite3 ~/.tapper/testrundb.sqlite
+

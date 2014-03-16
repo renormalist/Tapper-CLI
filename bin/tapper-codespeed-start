@@ -1,0 +1,10 @@
+#! /bin/bash
+
+PIDS=$(ps auxwww|grep 'python.*manage.*[r]unserver' | awk '{print $2}')
+if [ -n "$PIDS" ] ; then
+    kill $PIDS
+fi
+
+cd ~/tapper/benchmarks
+~/python/bin/python manage.py runserver 8000 >> ~/tapper/benchmarks/codespeed.log 2>&1 &
+

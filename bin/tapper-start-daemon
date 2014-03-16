@@ -1,0 +1,19 @@
+#! /bin/bash
+
+DAEMON=$1
+
+if [ "$DAEMON" = '-h' -o -z "$DAEMON" ] ; then
+    echo "$0 tapper_reports_web_server.pl"
+    echo "$0 tapper-reports-receiver"
+    echo "$0 tapper-reports-api"
+    echo "$0 tapper-mcp"
+    echo "$0 tapper-mcp-messagereceiver"
+else
+    echo "DAEMON=$DAEMON"
+    DAEMONPID="$(echo $(ps auxwww | grep -v grep | grep -- $DAEMON | awk '{print $2}'))"
+    echo "PID=$DAEMONPID"
+    if [ -n "$DAEMONPID" ] ; then
+        kill "$DAEMONPID"
+    fi
+    $DAEMON > /tmp/$DAEMON.log 2>&1 &
+fi

@@ -1,0 +1,20 @@
+#! /bin/bash
+
+IDLIST="$*"
+
+if [ -z "$IDLIST" ] ; then
+    IDLIST=$(echo "select testrun_id from testrun_scheduling where status!='finished';" | sqlite3 ~/.tapper/testrundb.sqlite)
+fi
+
+if [ -n "$IDLIST" ] ; then
+    for ID in $IDLIST ; do
+        HOST=$(echo "select host_id from testrun_scheduling where testrun_id=$ID;" | sqlite3 ~/.tapper/testrundb.sqlite)
+        echo "Finish testrun $ID"
+        echo "update testrun_scheduling set status='finished' where testrun_id=$ID;" | sqlite3 ~/.tapper/testrundb.sqlite
+        if [ -n "$HOST" ] ; then
+            NAME=$(echo "select name from host where id=$HOST;" | sqlite3 ~/.tapper/testrundb.sqlite)
+            echo "Free host $NAME ($HOST)"
+            echo "update host set free=1 where id=$HOST;" | sqlite3 ~/.tapper/testrundb.sqlite 
+        fi
+    done
+fi

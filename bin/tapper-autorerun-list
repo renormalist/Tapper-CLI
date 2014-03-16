@@ -1,0 +1,6 @@
+#! /bin/bash
+
+ID=$1
+
+echo "select testrun_id from testrun_scheduling where auto_rerun=1 and status!='finished';" | sqlite3 ~/.tapper/testrundb.sqlite
+

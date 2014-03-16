@@ -1,0 +1,10 @@
+#! /bin/bash
+
+STATUS=$1
+
+if [ -n "$STATUS" ] ; then
+    CONDITION=" where status='$STATUS'"
+fi
+
+echo "select * from testrun_scheduling $CONDITION;" | sqlite3 ~/.tapper/testrundb.sqlite
+
