@@ -24,6 +24,7 @@ sub setup
         Tapper::CLI::User::setup($c);
         Tapper::CLI::Host::setup($c);
         Tapper::CLI::Cobbler::setup($c);
+        Tapper::CLI::Control::setup($c);
         Tapper::CLI::Init::setup($c);
 }
 
